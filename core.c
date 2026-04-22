@@ -79,7 +79,7 @@ static void vga_init(void){
 
 
 
-void k_main(){
+void k_main(void){
   if ( fb_ptr != 0){
     vga_init();
     kprint("[OK] Successfully loaded Framebuffer.");
@@ -88,6 +88,8 @@ void k_main(){
   {
     __asm__("wfe");
   }
+  uart_init(); 
+  kprint("[OK] Loaded UART successfully.");
   
   while (1){
     __asm__("wfe");
