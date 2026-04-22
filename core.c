@@ -4,7 +4,7 @@
 #include "src/kernel/kernelfunc.h"
 #include "src/kernel/interrupttable.h"
 #include "srrc/kernel/syscalls/syscalls.h"
-
+#include "src/hardware/hardwarepi3.h"
 
 #ifndef MAILBOX_READ
 #define MAILBOX_READ 0x3F00B880
