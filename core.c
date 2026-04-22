@@ -2,7 +2,7 @@
 #include "src/simnixIO/kstdio.h"
 #include "src/init/init.h"
 #include "src/kernel/kernelfunc.h"
-#include <kernel/interrupttable.h"
+#include <kernel/interrupttable.h>"
 
 
 
