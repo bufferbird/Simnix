@@ -1,29 +1,16 @@
-/* Copyright (C) bufferbird */
-
 #ifndef KSTDIO_H
 #define KSTDIO_H
 
-
-
-#include <stdarg.h>
+#include <stdint.h>
 
 
 void kputc(char c);
+void kprint(const char* s);
+void kprintf(const char* format, ...); 
 
+void kprint_hex(uint32_t d);
+void kset_cursor(uint32_t x, uint32_t y);
+void kclear_screen(uint32_t color);
 
-void kprintf(const char* format, ...);
+#endif
 
-// helpfunction for instant output
-
-void kputs(const char* s);
-
-/**
- * Gives a number as hex
- */
-
-void kprint_hex(unsigned int d);
-
-#endif // KPRINTF_H
-
-
-#ifndef
