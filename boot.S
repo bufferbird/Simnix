@@ -9,15 +9,30 @@
 _start:
 
     mrs     x1, mpidr_el1
-    and     x1, x1, #3
-    cbz     x1, 2f
-1:  wfe
-    b       1b
+    and     x1, x1, #3          
+    cbz     x1, master_core    
 
-2:  
+park_core:
+    wfe
+    b       park_core
+
+master_core:
     ldr     x1, =_start
     mov     sp, x1
 
+
+    ldr     x1, =__bss_start    
+    ldr     x2, =__bss_end
+    mov     x3, #0              
+
+bss_loop:
+    cmp     x1, x2              
+    b.ge    jump_to_main        
+    str     x3, [x1], #8        
+    b       bss_loop
+
+jump_to_main:
     bl      k_main
-1:  wfe
-    b       1b
+
+    b       park_core
+
