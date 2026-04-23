@@ -1,10 +1,17 @@
+/* 
+ *Copyright (c) 2026 by bufferbird
+ * License - see LICENSE
+*/
+
 #include "src/simnixIO/font.h"
 #include "src/simnixIO/kstdio.h"
 #include "src/init/init.h"
 #include "src/kernel/kernelfunc.h"
 #include "src/kernel/interrupttable.h"
-#include "srrc/kernel/syscalls/syscalls.h"
+#include "src/kernel/syscalls/syscalls.h"
 #include "src/hardware/hardwarepi3.h"
+
+/* I write this, if it isn't declared in hardware. */ 
 
 #ifndef MAILBOX_READ
 #define MAILBOX_READ 0x3F00B880
@@ -18,7 +25,7 @@
 #define MAILBOX_WRITE 0x3F00B8A0
 #endif
 
-/* global ptr so it exists even after vga_init */
+/* global ptr so it exists also after vga_init */
 
 uint32_t* fb_ptr = 0;
 __attribute__((aligned(16))) uint32_t mailbox[32];
@@ -34,14 +41,15 @@ static void __initscreen(){
 }
 
 static void vga_init(void){
+    /* Yes. we have to do this. */
     mailbox[0] = 35 * 4;  
     mailbox[1] = 0;        
 
     mailbox[2] = 0x00048003; 
     mailbox[3] = 8;
     mailbox[4] = 8;
-    mailbox[5] = 1024; // Breite
-    mailbox[6] = 768;  // Höhe
+    mailbox[5] = 1024; // width
+    mailbox[6] = 768;  // height
 
     mailbox[7] = 0x00048004;
     mailbox[8] = 8;
@@ -77,20 +85,29 @@ static void vga_init(void){
     fb_ptr = (uint32_t*)(uintptr_t)(mailbox[20] & 0x3FFFFFFF);
 }
 
-
+/*
+ * Sooo, now we have the Pointer, and we can do funny things with it. 
+ * But let's init UART first, and then wie can use the beautyful 
+ * __initscreen to use fbr_ptr thee very first time. 
+*/
 
 void k_main(void){
-  if ( fb_ptr != 0){
-    vga_init();
+  uart_init(); 
+  vga_init(); 
+  
+  if (fb_ptr != 0){
+    __initscreen(); 
     kprint("[OK] Successfully loaded Framebuffer.");
   }
-  else
-  {
+  else {
+    kprint("[fb_ptr] Framebuffer failed."); 
     __asm__("wfe");
   }
-  uart_init(); 
+  
   kprint("[OK] Loaded UART successfully.");
   
   while (1){
     __asm__("wfe");
+  }
 }
+
