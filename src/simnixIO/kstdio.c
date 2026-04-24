@@ -1,5 +1,5 @@
-#include "include/kstdio.h"
-#include "include/font.h" // Hier muss dein font8x8_basic drin sein
+#include "src/simnixIO/kstdio.h"
+#include "src/font.h" // Hier muss dein font8x8_basic drin sein
 
 extern uint32_t* fb_ptr;
 static uint32_t cursor_x = 0;
