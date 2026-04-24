@@ -31,7 +31,7 @@ uint32_t* fb_ptr = 0;
 __attribute__((aligned(16))) uint32_t mailbox[32];
 
 
-static void __initscreen(){
+static void __initscreen__(){
   kclear_screen(0x00000000);
   kprint("Kernel - Simnix v3.6");
   kprint("Distribution - Saumix");
@@ -88,7 +88,7 @@ static void vga_init(void){
 /*
  * Sooo, now we have the Pointer, and we can do funny things with it. 
  * But let's init UART first, and then wie can use the beautyful 
- * __initscreen to use fbr_ptr thee very first time. 
+ * __initscreen__ to use fbr_ptr thee very first time. 
 */
 
 void k_main(void){
@@ -96,7 +96,7 @@ void k_main(void){
   vga_init(); 
   
   if (fb_ptr != 0){
-    __initscreen(); 
+    __initscreen__(); 
     kprint("[OK] Successfully loaded Framebuffer.");
   }
   else {
