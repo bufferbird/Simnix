@@ -1,7 +1,7 @@
 #ifndef KSTDIO_H
 #define KSTDIO_H
 
-#include <stdint.h>
+#include "src/stdDatatypes"
 
 
 void kputc(char c);
