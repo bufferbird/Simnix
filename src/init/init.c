@@ -1,7 +1,12 @@
 #include "src/hardware/hardwarepi3.h"
 
+uint32_t* fb_ptr = 0;
+
+
 void vga_init(){
     /* Yes. we have to do this. */
+
+    __attribute__((aligned(16))) uint32_t mailbox[32];
     mailbox[0] = 35 * 4;  
     mailbox[1] = 0;        
 
