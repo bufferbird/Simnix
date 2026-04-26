@@ -50,7 +50,6 @@ void vga_init(){
     fb_ptr = (uint32_t*)(uintptr_t)(mailbox[20] & 0x3FFFFFFF);
 }
    
-}
 void uart_init() {
     *UART0_CR = 0; 
 
