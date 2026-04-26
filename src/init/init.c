@@ -36,12 +36,12 @@ void vga_init(){
     mailbox[21] = 0; 
 
     // Send
-    while (*(volatile uint32_t*)MAILBOX_STATUS & 0x80000000);
+    while (*(volatile uint32_t*)MBOX_STATUS & 0x80000000);
     *(volatile uint32_t*)MAILBOX_WRITE = ((uint32_t)(uintptr_t)mailbox & ~0xF) | 8;
 
     // Wait
     while (1) {
-        while (*(volatile uint32_t*)MAILBOX_STATUS & 0x40000000);
+        while (*(volatile uint32_t*)MBOX_STATUS & 0x40000000);
         uint32_t response = *(volatile uint32_t*)MAILBOX_READ;
         if ((response & 0xF) == 8) break;
     }
