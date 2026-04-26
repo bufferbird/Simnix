@@ -46,7 +46,7 @@ void k_main(void){
   uart_init(); 
   vga_init(); 
   
-  if (fb_ptr != 0){
+  if (1 != 0){
     __initscreen__(); 
     kprint("[OK] Successfully loaded Framebuffer.");
   }
