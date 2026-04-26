@@ -27,8 +27,7 @@
 
 /* global ptr so it exists also after vga_init */
 
-uint32_t* fb_ptr = 0;
-__attribute__((aligned(16))) uint32_t mailbox[32];
+
 
 
 static void __initscreen__(){
