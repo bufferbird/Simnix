@@ -66,7 +66,7 @@ void uart_init() {
 
     *UART0_ICR = 0x7FF; // delete all interrupts
     *UART0_IBRD = 26;   
-    *UART0_FBR = 3;
+    *UART0_FR = 3;
     *UART0_LCRH = (3 << 5); 
     *UART0_CR = 0x301;  
 }
