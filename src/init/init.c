@@ -1,4 +1,5 @@
 #include "src/hardware/hardwarepi3.h"
+#include <stdint.h>
 
 uint32_t* fb_ptr = 0;
 
@@ -37,7 +38,7 @@ void vga_init(){
 
     // Send
     while (*(volatile uint32_t*)MBOX_STATUS & 0x80000000);
-    *(volatile uint32_t*)MBOX_WRITE = ((uint32_t)(uintptr_t)mailbox & ~0xF) | 8;
+    *(volatile uint32_t*)MBOX_WRITE = ((uint32_t)(uintptr_t) mailbox & ~0xF) | 8;
 
     // Wait
     while (1) {
