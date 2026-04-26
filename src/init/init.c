@@ -1,7 +1,6 @@
 #include "src/hardware/hardwarepi3.h"
 
 void vga_init(){
-   static void vga_init(void){
     /* Yes. we have to do this. */
     mailbox[0] = 35 * 4;  
     mailbox[1] = 0;        
