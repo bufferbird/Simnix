@@ -1,7 +1,7 @@
 #ifndef HARDWARE_H
 #define HARDWARE_H
 
-#include "stdDatatypes.h"
+#include "src/stdDatatypes.h"
 
 /* --- Basis-Adressen (Pi 3 / BCM2837) --- */
 #define PERIPHERAL_BASE 0x3F000000
