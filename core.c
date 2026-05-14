@@ -1,64 +1,30 @@
-/* 
- *Copyright (c) 2026 by bufferbird
- * License - see LICENSE
-*/
-
-#include "src/simnixIO/font.h"
-#include "src/simnixIO/kstdio.h"
-#include "src/init/init.h"
-#include "src/kernel/kernelfunc.h"
-#include "src/kernel/interrupttable.h"
-#include "src/kernel/syscalls/syscalls.h"
-#include "src/hardware/hardwarepi3.h"
-
-/* I write this, if it isn't declared in hardware. */ 
-
-#ifndef MAILBOX_READ
-#define MAILBOX_READ 0x3F00B880
-#endif
-
-#ifndef MAILBOX_STATUS
-#define MAILBOX_STATUS 0x3F00B898
-#endif
-
-#ifndef MAILBOX_WRITE
-#define MAILBOX_WRITE 0x3F00B8A0
-#endif
-
-/* global ptr so it exists also after vga_init */
+#include <stdint.h>
 
 
+extern uint64_t get_main_id(void);
+extern uint64_t get_timer_freq(void);
+extern uint64_t get_main_features(void);
+extern uint64_t get_sp(void);
 
+static void get_sys_info__(){
+    uint64_t cpu_id = get_main_id(); 
+    kprintf("[ OK ] ID: %x", cpu_id);
+    uint64_t timer_hz = get_timer_freq(); 
+    kprintf("[ OK ] Timer frequency: %x", timer_hz);   
+    uint64_t features = get_main_features(); 
+    kprintf("[ OK ] Main Features: %d", features); 
+    uint64_t current_sp = get_sp();
+    kprintf("[ OK ] Current Stack Pointer: %x", current_sp); 
+}
 
-static void __initscreen__(){
-  kclear_screen(0x00000000);
-  kprint("Kernel - Simnix v3.6");
-  kprint("Distribution - Saumix");
-  kprint("Ready for input...");
-
+static void vga_init(){
 
 }
 
 
 
 
-void k_main(void){
-  uart_init(); 
-  vga_init(); 
-  
-  if (1 != 0){
-    __initscreen__(); 
-    kprint("[OK] Successfully loaded Framebuffer.");
-  }
-  else {
-    kprint("[fb_ptr] Framebuffer failed."); 
-    __asm__("wfe");
-  }
-  
-  kprint("[OK] Loaded UART successfully.");
-  
-  while (1){
-    __asm__("wfe");
-  }
-}
 
+void k_main(){
+
+}
