@@ -1,6 +1,10 @@
 #include <stdint.h>
 #include "src/kprintf.h"
+#include "arch/hardwarepi3.h"
 
+
+
+#define VERSION 1.2
 
 extern uint64_t get_main_id(void);
 extern uint64_t get_timer_freq(void);
@@ -71,7 +75,20 @@ static void vga_init() {
 
 
 static void initscreen_term(){
-    
+    if (!fb_ptr){
+        volatile __asm__("wfe");
+    }
+    kclear_screen(0x00008B); 
+    kprintf("Simnix - v1.2, Unstable");
+    kprintf("\n");
+    if (passw)
+    {
+        kprintf("[user@simnix]~$"); 
+    }
+    else
+    {
+        kprintf("Simnix Login: "); 
+    }
 }
 
 
