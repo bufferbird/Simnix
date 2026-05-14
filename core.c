@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "src/kprintf.h"
 
 
 extern uint64_t get_main_id(void);
