@@ -18,6 +18,11 @@ void kclear_screen(uint32_t color) {
     cursor_y = 0;
 }
 
+char k_getc(void) {
+    while (*UART0_FR & (1 << 4));
+    return (char)(*UART0_DR & 0xFF);
+}
+
 void draw_pixel(uint32_t x, uint32_t y, uint32_t color) {
     if (x < SCREEN_WIDTH && y < SCREEN_HEIGHT) {
         fb_ptr[y * SCREEN_WIDTH + x] = color;
