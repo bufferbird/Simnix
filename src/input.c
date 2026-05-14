@@ -7,7 +7,7 @@ void k_input(char prompt[50], char* buffer, int max_size) {
     while (index < (max_size - 1)) {
         char c = k_getc(); 
         if (c == '\r' || c == '\n') {
-            break;
+            kprintf("\r\n");
         }
         buffer[index] = c; 
         index++;
