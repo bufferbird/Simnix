@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "src/kprintf.h"
 #include "arch/aarch64/RaspberryPi3/hardwarepi3.h"
-
+#include "src/input.c"
 
 
 #define VERSION 1.2
@@ -81,19 +81,39 @@ static void initscreen_term(){
     kclear_screen(0x00008B); 
     kprintf("Simnix - v1.2, Unstable");
     kprintf("\n");
-    if (passw)
-    {
-        kprintf("[user@simnix]~$"); 
-    }
-    else
-    {
-        kprintf("Simnix Login: "); 
-    }
 }
+
 
 
 void k_main(){
     vga_init();
-    get_sys_info__(); 
     initscreen_term(); 
+    get_sys_info__(); 
+    
+    while (1) {
+        k_input("~$ ", cmd_buffer, 64);
+        
+        if (strcmp(cmd_buffer, "help") == 0) {
+            kprintf("Available: help, clear, version, shutdown -ds\r\n");
+        } 
+        else if (strcmp(cmd_buffer, "version") == 0) {
+            kprintf("Simnix v1.2, Unstable\r\n");
+        } 
+        else if (strcmp(cmd_buffer, "") == 0) {
+        } 
+        else if (strcmp(cmd_buffer, "shutdown -ds") == 0){
+            kprintf("Simnix wird heruntergefahren...\r\n");
+            while(1) {
+                __asm__("wfi");
+            }
+        }
+        else if (strcmp(cmd_buffer, "clear") == 0){
+            initscreen_term(); 
+        }
+        else {
+            kprintf("error: Befehl '%s' nicht gefunden.\r\n", cmd_buffer);
+        }
+    } 
 }
+
+
