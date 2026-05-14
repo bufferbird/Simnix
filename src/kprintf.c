@@ -2,6 +2,8 @@
 #include "src/font.h"
 #include <stdint.h>
 #include <stdarg.h>
+#include "arch/aarch64/RaspberryPi3/hardwarepi3.h"
+
 
 extern uint32_t* fb_ptr;
 static uint32_t cursor_x = 0;
@@ -43,7 +45,7 @@ void kputc(char c) {
                 if (glyph[y] & (1 << x)) {
                     draw_pixel(cursor_x + x, cursor_y + y, 0xFFFFFFFF); 
                 } else {
-                    draw_pixel(cursor_x + x, cursor_y + y, 0x00000000);
+                    draw_pixel(cursor_x + x, cursor_y + y, 0x00008B);
                 }
             }
         }
@@ -80,8 +82,8 @@ void kprintf(const char* fmt, ...) {
     va_start(args, fmt);
 
     char* s;
-    int64_t n;        // Auf 64-Bit erweitert für %d
-    uint64_t val;     // Auf 64-Bit erweitert für %x
+    int64_t n;       
+    uint64_t val;     
     int nibble;
     char buf[1024];
     int i;
@@ -102,7 +104,6 @@ void kprintf(const char* fmt, ...) {
                     break;
 
                 case 'd':
-                    // va_arg holt jetzt die vollen 64 Bit eines int64_t
                     n = va_arg(args, int64_t);
                     if (n == 0) {
                         kputc('0');
@@ -121,9 +122,7 @@ void kprintf(const char* fmt, ...) {
                     break;
 
                 case 'x':
-                    // va_arg holt jetzt die vollen 64 Bit eines uint64_t
                     val = va_arg(args, uint64_t);
-                    // Schleife läuft nun von Bit 60 runter zu 0 (16 Nibbles für 64 Bit)
                     for (i = 60; i >= 0; i -= 4) {
                         nibble = (val >> i) & 0xF;
                         kputc(nibble < 10 ? nibble + '0' : nibble - 10 + 'A');
