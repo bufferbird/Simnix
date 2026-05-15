@@ -75,7 +75,6 @@ static void vga_init() {
         if ((response & 0xF) == 8) break;
     }
 
-    // Erfolg prüfen (0x80000000 = Success)
     if (mailbox[1] == 0x80000000 && mailbox[19] != 0) {
         fb_ptr = (uint32_t*)(uintptr_t)(mailbox[19] & 0x3FFFFFFF);
     } else {
@@ -88,7 +87,7 @@ static void vga_init() {
 
 static void initscreen_term(){
     if (!fb_ptr){
-        ___asm__ volatile("wfe");
+        __asm__ volatile("wfe");
     }
     kclear_screen(0x00008B); 
     kprintf("Simnix - v1.2, Unstable");
