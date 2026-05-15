@@ -1,4 +1,4 @@
-#include "src/kprint.h"
+#include "src/kprintf.h"
 #include "src/font.h"
 #include <stdint.h>
 #include <stdarg.h>
