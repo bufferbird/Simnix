@@ -24,7 +24,7 @@ static void get_sys_info__(){
     uint64_t current_sp = get_sp();
     kprintf("[ OK ] Current Stack Pointer: 0x%xn\r", current_sp); 
     kprintf("[ OK ] Checking fb_ptr...");
-    kprintf("[fb] fb_ptr at 0x%x", fb_ptr); 
+    kprintf("[fb] fb_ptr at 0x%x\n\r", fb_ptr); 
 }
 
 void draw_rect(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t color) {
@@ -114,7 +114,7 @@ void k_main(){
     
     while (1) {
         char cmd_buffer[64]; 
-        k_input("~$ ", cmd_buffer, 64);
+        k_input("\n\r~$ ", cmd_buffer, 64);
         
         if (strcmp(cmd_buffer, "help") == 0) {
             kprintf("Available: help, clear, version, shutdown -ds\r\n");
