@@ -1,6 +1,7 @@
 #include "src/init/init.h"
 #include "src/kprintf.h"
 #include "src/utils.h"
+#include "arch/aarch64/RaspberryPi3/hardwarepi3.h"
 
 void uart_init() {
     *UART0_CR = 0; 
