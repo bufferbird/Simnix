@@ -1,6 +1,7 @@
 #include "src/kprintf.h"
 #include "src/font.h"
 #include <stdint.h>
+;    
 #include <stdarg.h>
 #include "arch/aarch64/RaspberryPi3/hardwarepi3.h"
 
