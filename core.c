@@ -3,6 +3,8 @@
 #include "arch/aarch64/RaspberryPi3/hardwarepi3.h"
 #include "src/input.h"
 #include "src/utils.h"
+#include <stdalign>
+
 
 #define VERSION 1.2
 
