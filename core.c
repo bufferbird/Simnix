@@ -110,9 +110,9 @@ static void initscreen_term(){
 
 void k_main(){
     vga_init();
-    uart_init(); 
     initscreen_term(); 
     get_sys_info__(); 
+    uart_init(); 
     
     while (1) {
         char cmd_buffer[64]; 
