@@ -13,7 +13,7 @@ char k_getc(void);
 void kprint_hex(uint32_t d);
 void kset_cursor(uint32_t x, uint32_t y);
 void kclear_screen(uint32_t color);
-
+void draw_pixel(uint32_t x, uint32_t y, uint32_t color); 
 
 
 #endif
