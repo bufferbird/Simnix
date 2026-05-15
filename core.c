@@ -15,13 +15,15 @@ extern uint64_t get_sp(void);
 
 static void get_sys_info__(){
     uint64_t cpu_id = get_main_id(); 
-    kprintf("[ OK ] ID: %x", cpu_id);
+    kprintf("[ OK ] ID: %x\n\r", cpu_id);
     uint64_t timer_hz = get_timer_freq(); 
-    kprintf("[ OK ] Timer frequency: %x", timer_hz);   
+    kprintf("[ OK ] Timer frequency: %x\n\r", timer_hz);   
     uint64_t features = get_main_features(); 
-    kprintf("[ OK ] Main Features: %d", features); 
+    kprintf("[ OK ] Main Features: %d\n\r", features); 
     uint64_t current_sp = get_sp();
-    kprintf("[ OK ] Current Stack Pointer: %x", current_sp); 
+    kprintf("[ OK ] Current Stack Pointer: 0x%xn\r", current_sp); 
+    kprintf("[ OK ] Checking fb_ptr...");
+    kprintf("[fb] fb_ptr at 0x%x", fb_ptr); 
 }
 
 void draw_rect(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t color) {
