@@ -88,7 +88,7 @@ static void vga_init() {
 
 static void initscreen_term(){
     if (!fb_ptr){
-        volatile __asm__("wfe");
+        ___asm__ volatile("wfe");
     }
     kclear_screen(0x00008B); 
     kprintf("Simnix - v1.2, Unstable");
@@ -116,7 +116,7 @@ void k_main(){
         else if (strcmp(cmd_buffer, "shutdown -ds") == 0){
             kprintf("Simnix wird heruntergefahren...\r\n");
             while(1) {
-                __asm__("wfi");
+                __asm__ volatile("wfi");
             }
         }
         else if (strcmp(cmd_buffer, "clear") == 0){
