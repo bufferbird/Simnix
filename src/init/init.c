@@ -5,7 +5,7 @@
 
 void uart_init() {
     *UART0_CR = 0; 
-
+     kprintf("[ OK ] Disabling UART0 Interrupts...\n\r"); 
 
     *GPFSEL1 &= ~((7 << 12) | (7 << 15));
     *GPFSEL1 |= (4 << 12) | (4 << 15);    
@@ -19,6 +19,8 @@ void uart_init() {
     *UART0_ICR = 0x7FF; 
     *UART0_IBRD = 26;   
     *UART0_FBRD = 3;
+   kprintf("[UART] Finishing UART0 initializing...\r\n"); 
     *UART0_LCRH = (3 << 5);
     *UART0_CR = 0x301;  
+   kprintf("[ OK ] Finished! Enabled UART Interrupts!\r\n"); 
 }
