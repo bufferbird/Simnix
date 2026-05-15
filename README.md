@@ -22,7 +22,5 @@ Monolith or modular?
 For beginning this Kernel will be a monolith with some modular support, it is planned to let the user delete useless Drivers. 
 At the End, if everything turns perfect, it should be, that you have a minmal installtion, and then select drivers, and can load new ones, using the simnix package manager.
 
-----------------__-::-__-----------------------\n
-Bye Bye
------------------------------------------------
+
 
