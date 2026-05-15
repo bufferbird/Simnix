@@ -5,6 +5,7 @@
 #include "src/utils.h"
 #include <stdalign.h>
 #include <stddef.h>
+#include "src/init/init.h"
 
 uint32_t* fb_ptr = 0;
 #define VERSION 1.2
@@ -109,6 +110,7 @@ static void initscreen_term(){
 
 void k_main(){
     vga_init();
+    uart_init(); 
     initscreen_term(); 
     get_sys_info__(); 
     
