@@ -4,7 +4,7 @@
 #include "src/input.h"
 #include "src/utils.h"
 #include <stdalign.h>
-
+#include <stddef.h>
 
 #define VERSION 1.2
 
