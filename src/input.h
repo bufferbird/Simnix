@@ -2,6 +2,6 @@
 #define INPUT_H
  #include <stddef>
 
-void k_input(const char*, char* buf, size_t max_len); 
+void k_input(const char*, char* buffer, int max_size); 
 
 #endif
