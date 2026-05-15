@@ -23,40 +23,49 @@ static void get_sys_info__(){
 }
 
 
-static alignas(16) uint32_t mailbox[36];
+#define MBOX_REQUEST    0
 
+#define SET_PHYS_RES    0x00048003
+#define SET_VIRT_RES    0x00048004
+#define SET_DEPTH       0x00048005
+#define ALLOC_BUFFER    0x00040001
+#define TAG_END         0x00000000
+
+static alignas(16) uint32_t mailbox[35];
 uint32_t* fb_ptr = 0;
 
 static void vga_init() {
-    mailbox[0] = 35 * 4;        
-    mailbox[1] = 0;            
+    mailbox[0] = 35 * sizeof(uint32_t); 
+    mailbox[1] = MBOX_REQUEST;      
 
-    mailbox[2] = 0x00048003;   
-    mailbox[3] = 8;           
-    mailbox[4] = 8;            
-    mailbox[5] = 1024;        
-    mailbox[6] = 768;          
+    mailbox[2] = SET_PHYS_RES;   
+    mailbox[3] = 8;                   
+    mailbox[4] = 8;                  
+    mailbox[5] = 1024;     
+    mailbox[6] = 768;         
 
-    mailbox[7] = 0x00048004;   
+    mailbox[7] = SET_VIRT_RES;   
     mailbox[8] = 8;
     mailbox[9] = 8;
     mailbox[10] = 1024;
     mailbox[11] = 768;
 
-    mailbox[12] = 0x00048005;  
+
+    mailbox[12] = SET_DEPTH;  
     mailbox[13] = 4;
     mailbox[14] = 4;
     mailbox[15] = 32;           
-    mailbox[16] = 0x00040001;   
-    mailbox[17] = 8;
-    mailbox[18] = 8;
-    mailbox[19] = 4096;        
-    mailbox[20] = 0;            
 
-    mailbox[21] = 0;            // End Tag
+    mailbox[16] = ALLOC_BUFFER;   
+    mailbox[17] = 8;                 
+    mailbox[18] = 4;                
+    mailbox[19] = 16;                   
+    mailbox[20] = 0;                  
+
+    mailbox[21] = TAG_END;             
+
     while (*(volatile uint32_t*)MBOX_STATUS & 0x80000000);
     *(volatile uint32_t*)MBOX_WRITE = ((uint32_t)(uintptr_t)mailbox & ~0xF) | 8;
-
 
     while (1) {
         while (*(volatile uint32_t*)MBOX_STATUS & 0x40000000); 
@@ -64,13 +73,14 @@ static void vga_init() {
         if ((response & 0xF) == 8) break;
     }
 
-
-    if (mailbox[1] == 0x80000000 && mailbox[20] != 0) {
-        fb_ptr = (uint32_t*)(uintptr_t)(mailbox[20] & 0x3FFFFFFF);
+    // Erfolg prüfen (0x80000000 = Success)
+    if (mailbox[1] == 0x80000000 && mailbox[19] != 0) {
+        fb_ptr = (uint32_t*)(uintptr_t)(mailbox[19] & 0x3FFFFFFF);
     } else {
         fb_ptr = 0; 
     }
 }
+
 
 
 
