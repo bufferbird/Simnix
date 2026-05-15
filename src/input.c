@@ -8,6 +8,7 @@ void k_input(char prompt[50], char* buffer, int max_size) {
         char c = k_getc(); 
         if (c == '\r' || c == '\n') {
             kprintf("\r\n");
+            break
         }
         buffer[index] = c; 
         index++;
