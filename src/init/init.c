@@ -1,6 +1,6 @@
 #include "src/init/init.h"
 #include "src/kprintf.h"
-#include "utils.h"
+#include "src/utils.h"
 
 void uart_init() {
     *UART0_CR = 0; 
