@@ -102,6 +102,7 @@ void k_main(){
     get_sys_info__(); 
     
     while (1) {
+        char[64] cmd_buffer; 
         k_input("~$ ", cmd_buffer, 64);
         
         if (strcmp(cmd_buffer, "help") == 0) {
