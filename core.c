@@ -24,6 +24,13 @@ static void get_sys_info__(){
     kprintf("[ OK ] Current Stack Pointer: %x", current_sp); 
 }
 
+void draw_rect(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t color) {
+    for (uint32_t i = 0; i < height; i++) {
+        for (uint32_t j = 0; j < width; j++) {
+            draw_pixel(x + j, y + i, color);
+        }
+    }
+}
 
 #define MBOX_REQUEST    0
 
@@ -92,6 +99,7 @@ static void initscreen_term(){
     kclear_screen(0x00008B); 
     kprintf("Simnix - v1.2, Unstable");
     kprintf("\n");
+    kprintf("\r\n"); 
 }
 
 
