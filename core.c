@@ -118,6 +118,7 @@ void k_main(){
     get_sys_info__(); 
     uart_init(); 
     kprintf("Starting Command Line Interface\r\n"); 
+    initscreen_term(); 
     while (1) {
         char cmd_buffer[64]; 
         k_input("\n\r~$ ", cmd_buffer, 64);
