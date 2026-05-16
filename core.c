@@ -93,6 +93,7 @@ static void vga_init() {
         fb_ptr = (uint32_t*)(uintptr_t)(mailbox[19] & 0x3FFFFFFF);
     } else {
         fb_ptr = 0; 
+        __asm__ volatile("wfi");
     }
 }
 
