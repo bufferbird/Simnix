@@ -24,8 +24,11 @@ static void get_sys_info__(){
     kprintf("[ OK ] Main Features: %d\n\r", features); 
     uint64_t current_sp = get_sp();
     kprintf("[ OK ] Current Stack Pointer: 0x%xn\r", current_sp); 
-    kprintf("[ OK ] Checking fb_ptr...");
+    kprintf("[ OK ] Checking fb_ptr...\r\n");
     kprintf("[fb] fb_ptr at 0x%x\n\r", fb_ptr); 
+    if (fb_ptr != 0){
+        kprintf("[fbptr] fbptr != 0: 0x%x\r\n", fb_ptr); 
+    }
 }
 
 void draw_rect(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t color) {
@@ -113,7 +116,7 @@ void k_main(){
     initscreen_term(); 
     get_sys_info__(); 
     uart_init(); 
-    
+    kprintf("Starting Command Line Interface\r\n"); 
     while (1) {
         char cmd_buffer[64]; 
         k_input("\n\r~$ ", cmd_buffer, 64);
