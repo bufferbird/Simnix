@@ -9,7 +9,7 @@ void uart_init() {
 
     *GPFSEL1 &= ~((7 << 12) | (7 << 15));
     *GPFSEL1 |= (4 << 12) | (4 << 15);    
-    kprintf("*GPFSEL &= ~((7 << 12) | (7 << 15))"); 
+    kprintf("[ OK ] *GPFSEL &= ~((7 << 12) | (7 << 15))"); 
 
     *GPPUD = 0; 
     for(int i=0; i<150; i++) __asm__("nop");
