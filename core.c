@@ -45,7 +45,7 @@ static void get_sys_info__(){
     uint64_t features = get_main_features(); 
     kprintf("[ OK ] Main Features: %d\n\r", features); 
     uint64_t current_sp = get_sp();
-    kprintf("[ OK ] Current Stack Pointer: 0x%xn\r", current_sp); 
+    kprintf("[ OK ] Current Stack Pointer: 0x%x\n\r", current_sp); 
     #ifdef ARCH_X86_64
     kprintf("[ OK ] Architecture: x86_64 (PC Mode)\n\r");
     #elif defined(ARCH_AARCH64)
