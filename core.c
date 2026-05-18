@@ -1,21 +1,43 @@
+/*
+  Copyright (c) by bufferbird
+  License: GPL, see: LICENSE. 
+*/
+
 #include <stdint.h>
 #include "src/kprintf.h"
-#include "arch/aarch64/RaspberryPi3/hardwarepi3.h"
 #include "src/input.h"
 #include "src/utils.h"
 #include <stdalign.h>
 #include <stddef.h>
 #include "src/init/init.h"
 
+#ifdef ARCH_AARCH64
+#include "arch/aarch64/RaspberryPi3/hardwarepi3.h"
+#endif
+
 uint32_t* fb_ptr = 0;
 #define VERSION 1.2
+
 
 extern uint64_t get_main_id(void);
 extern uint64_t get_timer_freq(void);
 extern uint64_t get_main_features(void);
 extern uint64_t get_sp(void);
 
+/*  Helpful function for CPU Deepsleep, so we dont need to write 
+*   __asm__ volatile({sleep opcode}) every time, with the 
+*/  special opcode of each arch, like hlt, cli or wfi. 
+
+static inline void cpu_halt(void) {
+    #ifdef ARCH_X86_64
+    __asm__ volatile("hlt");
+    #elif defined(ARCH_AARCH64)
+    __asm__ volatile("wfi");
+    #endif
+}
+
 static void get_sys_info__(){
+    #ifdef ARCH_AARCH64
     uint64_t cpu_id = get_main_id(); 
     kprintf("[ OK ] ID: %x\n\r", cpu_id);
     uint64_t timer_hz = get_timer_freq(); 
@@ -24,6 +46,10 @@ static void get_sys_info__(){
     kprintf("[ OK ] Main Features: %d\n\r", features); 
     uint64_t current_sp = get_sp();
     kprintf("[ OK ] Current Stack Pointer: 0x%xn\r", current_sp); 
+    #elif defined(ARCH_X86_64)
+    kprintf("[ OK ] Architecture: x86_64 (PC Mode)\n\r");
+    #endif
+
     kprintf("[ OK ] Checking fb_ptr...\r\n");
     kprintf("[fb] fb_ptr at 0x%x\n\r", fb_ptr); 
     if (fb_ptr != 0){
@@ -39,8 +65,8 @@ void draw_rect(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t
     }
 }
 
+#ifdef ARCH_AARCH64
 #define MBOX_REQUEST    0
-
 #define SET_PHYS_RES    0x00048003
 #define SET_VIRT_RES    0x00048004
 #define SET_DEPTH       0x00048005
@@ -48,9 +74,10 @@ void draw_rect(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t
 #define TAG_END         0x00000000
 
 static alignas(16) uint32_t mailbox[35];
-
+#endif
 
 static void vga_init() {
+    #ifdef ARCH_AARCH64
     mailbox[0] = 35 * sizeof(uint32_t); 
     mailbox[1] = MBOX_REQUEST;      
 
@@ -65,7 +92,6 @@ static void vga_init() {
     mailbox[9] = 8;
     mailbox[10] = 1024;
     mailbox[11] = 768;
-
 
     mailbox[12] = SET_DEPTH;  
     mailbox[13] = 4;
@@ -93,16 +119,24 @@ static void vga_init() {
         fb_ptr = (uint32_t*)(uintptr_t)(mailbox[19] & 0x3FFFFFFF);
     } else {
         fb_ptr = 0; 
-        __asm__ volatile("wfi");
+        cpu_halt();
     }
+
+    #elif defined(__x86_64__)
+    /* 
+    * Under x86 i have to read the multiboot header, but for an example, im judt writing 0xFD000000 here, wich is the standard of QEMU VBE
+    */
+    fb_ptr = (uint32_t*)0xFD000000;
+    #endif
 }
-
-
-
 
 static void initscreen_term(){
     if (!fb_ptr){
+        #ifdef ARCH_AARCH64
         __asm__ volatile("wfe");
+        #elif defined(ARCH_X86_64)
+        __asm__ volatile("hlt");
+        #endif
     }
     kclear_screen(0x00008B); 
     kprintf("Simnix - v1.2, Unstable");
@@ -110,13 +144,12 @@ static void initscreen_term(){
     kprintf("\r\n"); 
 }
 
-
-
 void k_main(){
     vga_init();
     initscreen_term(); 
     get_sys_info__(); 
-    uart_init(); 
+    uart_init();
+    
     kprintf("Starting Command Line Interface\r\n"); 
     while (1) {
         char cmd_buffer[64]; 
@@ -133,7 +166,7 @@ void k_main(){
         else if (strcmp(cmd_buffer, "shutdown -ds") == 0){
             kprintf("Simnix wird heruntergefahren...\r\n");
             while(1) {
-                __asm__ volatile("wfi");
+                cpu_halt();
             }
         }
         else if (strcmp(cmd_buffer, "clear") == 0){
@@ -144,5 +177,6 @@ void k_main(){
         }
     } 
 }
+
 
 
