@@ -49,16 +49,16 @@ static void get_sys_info__(){
     #ifdef ARCH_X86_64
     kprintf("[ OK ] Architecture: x86_64 (PC Mode)\n\r");
     #elif defined(ARCH_AARCH64)
-    kprintf("[SYS] Detected AArch64! ");
+    kprintf("[SYS] Detected AArch64! \n\r");
     #else
-    kprintf("Unknown Architecture??");
+    kprintf("Unknown Architecture??\n\r");
     #endif
 
     kprintf("[ OK ] Checking fb_ptr...\r\n");
     kprintf("[fb] fb_ptr at 0x%x\n\r", fb_ptr); 
     if (fb_ptr != 0){
         kprintf("[fbptr] fbptr != 0: 0x%x\r\n", fb_ptr); 
-        kprintf("Ready and Waiting :-)"); 
+        kprintf("Ready and Waiting :-)\n\r"); 
     }
 }
 
