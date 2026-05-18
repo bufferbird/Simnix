@@ -37,7 +37,6 @@ static inline void cpu_halt(void) {
 }
 
 static void get_sys_info__(){
-    #ifdef ARCH_AARCH64
     uint64_t cpu_id = get_main_id(); 
     kprintf("[ OK ] ID: %x\n\r", cpu_id);
     uint64_t timer_hz = get_timer_freq(); 
@@ -46,14 +45,19 @@ static void get_sys_info__(){
     kprintf("[ OK ] Main Features: %d\n\r", features); 
     uint64_t current_sp = get_sp();
     kprintf("[ OK ] Current Stack Pointer: 0x%xn\r", current_sp); 
-    #elif defined(ARCH_X86_64)
+    #ifdef ARCH_X86_64
     kprintf("[ OK ] Architecture: x86_64 (PC Mode)\n\r");
+    #elif defined(ARCH_AARCH64)
+    kprintf("[SYS] Detected AArch64! ");
+    #else
+    kprintf("Unknown Architecture??")
     #endif
 
     kprintf("[ OK ] Checking fb_ptr...\r\n");
     kprintf("[fb] fb_ptr at 0x%x\n\r", fb_ptr); 
     if (fb_ptr != 0){
         kprintf("[fbptr] fbptr != 0: 0x%x\r\n", fb_ptr); 
+        kprintf("Ready and Waiting :-)"); 
     }
 }
 
