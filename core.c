@@ -26,7 +26,8 @@ extern uint64_t get_sp(void);
 
 /*  Helpful function for CPU Deepsleep, so we dont need to write 
 *   __asm__ volatile({sleep opcode}) every time, with the 
-*/  special opcode of each arch, like hlt, cli or wfi. 
+*   special opcode of each arch, like hlt, cli or wfi. 
+*/
 
 static inline void cpu_halt(void) {
     #ifdef ARCH_X86_64
@@ -50,7 +51,7 @@ static void get_sys_info__(){
     #elif defined(ARCH_AARCH64)
     kprintf("[SYS] Detected AArch64! ");
     #else
-    kprintf("Unknown Architecture??")
+    kprintf("Unknown Architecture??");
     #endif
 
     kprintf("[ OK ] Checking fb_ptr...\r\n");
